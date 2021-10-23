@@ -16,6 +16,7 @@ const sketch = ({ context, width, height }) => {
   const points = [];
   const circleStrokeWeight = 2;
   const circleRadius = 20;
+  const connectDistance = 150;
 
   class Point {
     constructor(x, y, velX, velY, radius) {
@@ -39,6 +40,24 @@ const sketch = ({ context, width, height }) => {
     }
   }
 
+  function connectIfClose(currInd) {
+    curr = points[currInd];
+    for (let i = 0; i < points.length; i++) {
+      if (i != currInd) {
+        const comparison = points[i];
+
+        // calculate line thickness based on size of the two circles
+        const lineThickness = min(curr.radius, comparison.radius) / 8;
+
+        if (dist(curr.x, curr.y, comparison.x, comparison.y) < connectDistance) {
+          push();
+          strokeWeight(lineThickness);
+          line(curr.x, curr.y, comparison.x, comparison.y);
+          pop();
+        }
+      }
+    }
+  }
 
 
 
@@ -63,6 +82,8 @@ const sketch = ({ context, width, height }) => {
     for (let i = 0; i < points.length; i++) {
       circle(points[i].x, points[i].y, points[i].radius);
       points[i].update();
+
+      connectIfClose(i);
     }
 
     pop();
