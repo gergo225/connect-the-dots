@@ -14,13 +14,16 @@ const sketch = ({ context, width, height }) => {
   const pointCount = 100;
   const maxVel = 3;
   const points = [];
+  const circleStrokeWeight = 2;
+  const circleRadius = 20;
 
   class Point {
-    constructor(x, y, velX, velY) {
+    constructor(x, y, velX, velY, radius) {
       this.x = x;
       this.y = y;
       this.velX = velX;
       this.velY = velY;
+      this.radius = radius;
     }
 
     update() {
@@ -45,7 +48,7 @@ const sketch = ({ context, width, height }) => {
     const y = Math.random() * height;
     const velX = random(-1, 1) * maxVel;
     const velY = random(-1, 1) * maxVel;
-    points.push(new Point(x, y, velX, velY));
+    points.push(new Point(x, y, velX, velY, circleRadius * random(0.6, 1.1)));
   }
 
 
@@ -56,9 +59,9 @@ const sketch = ({ context, width, height }) => {
     push();
 
     stroke('black');
-    strokeWeight(20);
+    strokeWeight(circleStrokeWeight);
     for (let i = 0; i < points.length; i++) {
-      point(points[i].x, points[i].y);
+      circle(points[i].x, points[i].y, points[i].radius);
       points[i].update();
     }
 
