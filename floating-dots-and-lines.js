@@ -49,9 +49,11 @@ const sketch = ({ context, width, height }) => {
         // calculate line thickness based on size of the two circles
         const lineThickness = min(curr.radius, comparison.radius) / 8;
 
-        if (dist(curr.x, curr.y, comparison.x, comparison.y) < connectDistance) {
+        const distance = dist(curr.x, curr.y, comparison.x, comparison.y);
+        if (distance < connectDistance) {
           push();
-          strokeWeight(lineThickness);
+          const strokeThickness = map(distance, 0, connectDistance, lineThickness * 0.6, lineThickness * 1.6);
+            strokeWeight(strokeThickness);
           line(curr.x, curr.y, comparison.x, comparison.y);
           pop();
         }
